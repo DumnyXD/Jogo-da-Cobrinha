@@ -27,10 +27,10 @@ class Cobrinha:
                 x = 610
             elif x > 610:
                 x = 20
-            elif y < 70:
-                y = 480
-            elif y > 480:
-                y = 70
+            elif y < 60:
+                y = 450
+            elif y > 450:
+                y = 60
 
             if (x, y) in self.corpo:
                 pygame.quit()

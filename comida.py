@@ -11,7 +11,7 @@ class Comida:
 
     def novaPos(self):
         x = random.randint(20, 610 - 10)
-        y = random.randint(70, 480 - 10)
+        y = random.randint(70, 450 - 10)
         return (x // 10 * 10, y // 10 * 10)
 
     def draw(self, tela):

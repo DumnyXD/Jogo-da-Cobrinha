@@ -35,7 +35,7 @@ tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Cobrinha")
 
 while True:
-    fps.tick(16)
+    fps.tick(13)
 
     for event in pygame.event.get():
         if event.type == QUIT:

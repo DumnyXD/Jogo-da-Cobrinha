@@ -14,7 +14,7 @@ altura = 480
 
 corFundo = (32, 33, 36)
 corBordas = (42, 43, 46)
-corTitulo = (255, 255, 255)
+corTitulo = (200, 0, 255)
 corComida = (255, 0, 0)
 corCabeca = (0, 230, 0)
 corCorpo = (0, 255, 0)
@@ -23,16 +23,16 @@ comida = Comida(corComida)
 cobrinha = Cobrinha(corCabeca, corCorpo, (100, 100), )  # posição inicial da cobrinha
 
 fontTitulo = pygame.font.Font("Daydream.ttf", 30)
-titulo = fontTitulo.render("cobrinha", True, corTitulo)
+titulo = fontTitulo.render("Snake Game", True, corTitulo)
 
-larguraTitulo, alturaTitulo = fontTitulo.size("cobrinha")
+larguraTitulo, alturaTitulo = fontTitulo.size("Snake Game")
 
 tituloX = (largura - larguraTitulo) // 2
 tituloy = (50 - alturaTitulo) // 2
 
 tela = pygame.display.set_mode((largura, altura))
 
-pygame.display.set_caption("Cobrinha")
+pygame.display.set_caption("Snake Game")
 
 while True:
     fps.tick(13)
@@ -42,14 +42,18 @@ while True:
             pygame.quit()
             exit()
         elif event.type == KEYDOWN:
-            if event.key == K_UP and cobrinha.direcao != "baixo":
+            if (event.key == K_UP or event.key == K_w) and cobrinha.direcao != "baixo":
                 cobrinha.direcao = "cima"
-            elif event.key == K_DOWN and cobrinha.direcao != "cima":
+                break
+            elif (event.key == K_DOWN or event.key == K_s) and cobrinha.direcao != "cima":
                 cobrinha.direcao = "baixo"
-            elif event.key == K_LEFT and cobrinha.direcao != "direita":
+                break
+            elif (event.key == K_LEFT or event.key == K_a) and cobrinha.direcao != "direita":
                 cobrinha.direcao = "esquerda"
-            elif event.key == K_RIGHT and cobrinha.direcao != "esquerda":
+                break
+            elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.direcao != "esquerda":
                 cobrinha.direcao = "direita"
+                break
 
     if comida.pos == cobrinha.corpo[0]:
         ponto = True

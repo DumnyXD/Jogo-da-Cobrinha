@@ -48,7 +48,7 @@ while True:
             elif (event.key == K_DOWN or event.key == K_s) and cobrinha.direcao != "cima":
                 cobrinha.direcao = "baixo"
                 break
-            elif (event.key == K_LEFT or event.key == K_a) and cobrinha.direcao != "direita":
+            elif (event.key == K_LEFT or event.key == K_a) and cobrinha.direcao != "direita" and cobrinha.direcao != None:
                 cobrinha.direcao = "esquerda"
                 break
             elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.direcao != "esquerda":
@@ -66,8 +66,8 @@ while True:
 
     cobrinha.move(ponto)
 
-    pygame.draw.rect(tela, corBordas, (5, 50, largura - 10, altura - 55))
-    pygame.draw.rect(tela, corFundo, (10, 55, largura - 20, altura - 65))
+    pygame.draw.rect(tela, corBordas, (5, 45, largura - 10, altura - 50))
+    pygame.draw.rect(tela, corFundo, (10, 50, largura - 20, altura - 60))
 
     tela.blit(titulo, (tituloX, tituloy))
 

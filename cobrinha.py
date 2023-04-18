@@ -22,15 +22,18 @@ class Cobrinha:
             elif self.direcao == "direita":
                 x += self.tamanho
 
-            # Verifica se a cabeça da cobra está fora da área de ação
-            if x < 20:
-                x = 610
-            elif x > 610:
-                x = 20
-            elif y < 60:
-                y = 450
-            elif y > 450:
-                y = 60
+            if x < 10:
+                pygame.quit()
+                sys.exit()
+            elif x > 620:
+                pygame.quit()
+                sys.exit()
+            elif y < 50:
+                pygame.quit()
+                sys.exit()
+            elif y > 460:
+                pygame.quit()
+                sys.exit()
 
             if (x, y) in self.corpo:
                 pygame.quit()

@@ -1,9 +1,9 @@
-import pygame
-from telas import jogo
-from telas import menu
-from pygame.locals import *
-import sys
+import telas
 
-pygame.init()
-menu()
-jogo()
+while True:
+    opcao = telas.menu()
+    if opcao == "Iniciar":
+        telas.jogo()
+
+    elif opcao == "Creditos":
+        telas.creditos()

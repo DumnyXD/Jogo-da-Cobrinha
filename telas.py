@@ -16,7 +16,8 @@ def jogo():
     corCorpo = (0, 255, 0)
 
     comida = Comida(corComida)
-    cobrinha = Cobrinha(corCabeca, corCorpo, (100, 100), )
+    cobrinha = Cobrinha(corCabeca, corCorpo, (100, 100))
+
 
     fontTitulo = pygame.font.Font("Daydream.ttf", 30)
     titulo = fontTitulo.render("Snake Game", True, corTitulo)
@@ -50,6 +51,9 @@ def jogo():
                     cobrinha.direcao = "direita"
                     break
 
+        if cobrinha.perca == 0:
+            break
+
         if comida.pos == cobrinha.corpo[0]:
             ponto = True
             comida.pos = comida.novaPos()
@@ -77,21 +81,20 @@ def menu():
     pygame.init()
 
     cores = {
-        'opcoes':(0, 200, 0),
-        'sair':(255, 10, 10),
-        'fundoOP':tela.corBorda,
-        'fundo':tela.corFundo
+        'opcoes': (0, 200, 0),
+        'sair': (255, 10, 10),
+        'fundoOP': tela.corBorda,
+        'fundo': tela.corFundo
     }
 
     fonteMenu = pygame.font.Font("Daydream.ttf", 36)
 
     textoIniciar, larguraIniciar, alturaIniciar = ut.CriarTexto("Iniciar", cores['opcoes'], 36, cores['fundoOP'])
     textoCreditos, larguraCreditos, alturaCreditos = ut.CriarTexto("Creditos", cores['opcoes'], 36, cores['fundoOP'])
-    textoSair, larguraSair, alturaSair = ut.CriarTexto("Sair", cores['sair'],36,cores['fundoOP'])
+    textoSair, larguraSair, alturaSair = ut.CriarTexto("Sair", cores['sair'], 36, cores['fundoOP'])
 
-
-    posIniciar = ut.PosTextoMeio((larguraIniciar,alturaIniciar),250)
-    posCreditos = ut.PosTextoMeio((larguraCreditos,alturaCreditos),posIniciar[1]+100)
+    posIniciar = ut.PosTextoMeio((larguraIniciar, alturaIniciar), 250)
+    posCreditos = ut.PosTextoMeio((larguraCreditos, alturaCreditos), posIniciar[1] + 100)
 
     sairX = (tela.largura - larguraSair) // 2
     sairY = (posCreditos[1] + 100) - (alturaSair // 2)

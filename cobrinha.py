@@ -9,6 +9,7 @@ class Cobrinha:
         self.tamanho = 10
         self.corpo = [posInicial, (posInicial[0] - 10, posInicial[1]), (posInicial[0] - 20, posInicial[1])]
         self.direcao = None
+        self.perca = 1
 
     def move(self, ponto: bool):
         if self.direcao:
@@ -23,21 +24,16 @@ class Cobrinha:
                 x += self.tamanho
 
             if x < 10:
-                pygame.quit()
-                sys.exit()
+                self.perca = 0
             elif x > 620:
-                pygame.quit()
-                sys.exit()
+                self.perca = 0
             elif y < 50:
-                pygame.quit()
-                sys.exit()
+                self.perca = 0
             elif y > 460:
-                pygame.quit()
-                sys.exit()
+                self.perca = 0
 
             if (x, y) in self.corpo:
-                pygame.quit()
-                sys.exit()
+                self.perca = 0
 
             self.corpo.insert(0, (x, y))
             if not ponto:

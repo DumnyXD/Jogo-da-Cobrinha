@@ -3,7 +3,8 @@ from sys import exit
 from pygame.locals import *
 from cobrinha import Cobrinha
 from comida import Comida
-from tela import tela
+from tela import Tela
+from texto import ObjetoTexto
 import utilidades as ut
 
 
@@ -24,13 +25,13 @@ def jogo():
 
     larguraTitulo, alturaTitulo = fontTitulo.size("Snake Game")
 
-    tituloX = (tela.largura - larguraTitulo) // 2
+    tituloX = (Tela.largura - larguraTitulo) // 2
     tituloy = (50 - alturaTitulo) // 2
 
     pygame.display.set_caption("Snake Game")
 
     while True:
-        tela.fps.tick(13)
+        Tela.fps.tick(13)
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -61,18 +62,18 @@ def jogo():
         else:
             ponto = False
 
-        tela.tela.fill(tela.corFundo)
+        Tela.tela.fill(Tela.corFundo)
 
         cobrinha.move(ponto)
 
-        pygame.draw.rect(tela.tela, tela.corBorda, (5, 45, tela.largura - 10, tela.altura - 50))
-        pygame.draw.rect(tela.tela, tela.corFundo, (10, 50, tela.largura - 20, tela.altura - 60))
+        pygame.draw.rect(Tela.tela, Tela.corBorda, (5, 45, Tela.largura - 10, Tela.altura - 50))
+        pygame.draw.rect(Tela.tela, Tela.corFundo, (10, 50, Tela.largura - 20, Tela.altura - 60))
 
-        tela.tela.blit(titulo, (tituloX, tituloy))
+        Tela.tela.blit(titulo, (tituloX, tituloy))
 
-        comida.draw(tela.tela)
+        comida.draw(Tela.tela)
 
-        cobrinha.desenha(tela.tela)
+        cobrinha.desenha(Tela.tela)
 
         pygame.display.update()
 
@@ -83,32 +84,33 @@ def menu():
     cores = {
         'opcoes': (0, 200, 0),
         'sair': (255, 10, 10),
-        'fundoOP': tela.corBorda,
-        'fundo': tela.corFundo
+        'fundoOP': Tela.corBorda,
+        'fundo': Tela.corFundo
     }
 
-    fonteMenu = pygame.font.Font("Daydream.ttf", 36)
+    iniciar = ObjetoTexto("iniciar", cores['opcoes'],36,"Daydream.ttf", cores['fundoOP'])
+    iniciar.FormatarMeio(250)
 
-    textoIniciar, larguraIniciar, alturaIniciar = ut.CriarTexto("Iniciar", cores['opcoes'], 36, cores['fundoOP'])
+    #textoIniciar, larguraIniciar, alturaIniciar = ut.CriarTexto("iniciar", cores['opcoes'], 36, cores['fundoOP'])
     textoCreditos, larguraCreditos, alturaCreditos = ut.CriarTexto("Creditos", cores['opcoes'], 36, cores['fundoOP'])
     textoSair, larguraSair, alturaSair = ut.CriarTexto("Sair", cores['sair'], 36, cores['fundoOP'])
 
-    posIniciar = ut.PosTextoMeio((larguraIniciar, alturaIniciar), 250)
-    posCreditos = ut.PosTextoMeio((larguraCreditos, alturaCreditos), posIniciar[1] + 100)
+    #posIniciar = ut.PosTextoMeio((larguraIniciar, alturaIniciar), 250)
+    posCreditos = ut.PosTextoMeio((larguraCreditos, alturaCreditos), iniciar.posY + 100)
 
-    sairX = (tela.largura - larguraSair) // 2
+    sairX = (Tela.largura - larguraSair) // 2
     sairY = (posCreditos[1] + 100) - (alturaSair // 2)
 
-    botaoIniciar = pygame.Rect(posIniciar[0], posIniciar[1], larguraIniciar, alturaIniciar)
+    botaoIniciar = pygame.Rect(iniciar.posX, iniciar.posY, iniciar.largura, iniciar.altura)
     botaoCredito = pygame.Rect(posCreditos[0], posCreditos[1], larguraCreditos, alturaCreditos)
     botaoSair = pygame.Rect(sairX, sairY, larguraSair, alturaSair)
 
     pygame.display.set_caption("Snake Game")
 
     while True:
-        tela.fps.tick(13)
+        Tela.fps.tick(13)
 
-        tela.tela.fill(tela.corFundo)
+        Tela.tela.fill(Tela.corFundo)
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -117,7 +119,8 @@ def menu():
             elif event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if botaoIniciar.collidepoint(event.pos):
-                        return "Iniciar"
+                        return "iniciar"
+                        exit()
 
                     elif botaoCredito.collidepoint(event.pos):
                         return "Creditos"
@@ -126,9 +129,9 @@ def menu():
                         pygame.quit()
                         exit()
 
-        tela.tela.blit(textoIniciar, posIniciar)
-        tela.tela.blit(textoCreditos, posCreditos)
-        tela.tela.blit(textoSair, (sairX, sairY))
+        iniciar.Draw()
+        Tela.tela.blit(textoCreditos, posCreditos)
+        Tela.tela.blit(textoSair, (sairX, sairY))
 
         pygame.display.update()
 
@@ -137,7 +140,7 @@ def creditos():
     pygame.init()
 
     while True:
-        tela.fps.tick(13)
+        Tela.fps.tick(13)
         for event in pygame.event.get():
             if event == QUIT:
                 pygame.quit()

@@ -1,5 +1,5 @@
 import pygame
-from tela import tela
+from tela import Tela
 
 
 def CriarTexto(texto: str, cor: tuple[int, int, int], tamanho: int, fundo=None, ):
@@ -14,6 +14,6 @@ def CriarTexto(texto: str, cor: tuple[int, int, int], tamanho: int, fundo=None, 
 
 
 def PosTextoMeio(sizeTexto: tuple[int, int], posY: int):
-    textoX = (tela.largura - sizeTexto[0]) //2
+    textoX = (Tela.largura - sizeTexto[0]) // 2
     textoY = posY - (sizeTexto[1] // 2)
     return textoX, textoY

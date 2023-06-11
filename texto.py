@@ -14,7 +14,7 @@ class ObjetoTexto:
         self.largura, self.altura = self.font.size(self.texto)
         self.posX = 1
         self.posY = 1
-        #self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)
+        self.botao = None
         if self.fundo is None:
             self.render = self.font.render(self.texto, True, self.cor)
         else:
@@ -26,3 +26,10 @@ class ObjetoTexto:
     def FormatarMeio(self, Y: int):
         self.posX = (Tela.largura - self.largura) // 2
         self.posY = Y - (self.altura // 2)
+
+    def FormatarInferorDireito(self):
+        self.posX = (Tela.largura - self.largura)-20
+        self.posY = (Tela.altura-self.altura)-20
+
+    def CriarBotao(self):
+        self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)

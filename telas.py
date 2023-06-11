@@ -19,6 +19,7 @@ def jogo():
     comida = Comida(corComida)
     cobrinha = Cobrinha(corCabeca, corCorpo, (100, 100))
 
+    titulo = ObjetoTexto("Snake Game", corTitulo, 30, "Daydream.ttf")
 
     fontTitulo = pygame.font.Font("Daydream.ttf", 30)
     titulo = fontTitulo.render("Snake Game", True, corTitulo)
@@ -88,21 +89,19 @@ def menu():
         'fundo': Tela.corFundo
     }
 
-    iniciar = ObjetoTexto("iniciar", cores['opcoes'],36,"Daydream.ttf", cores['fundoOP'])
+    iniciar = ObjetoTexto("Iniciar", cores['opcoes'], 36, "Daydream.ttf", cores['fundoOP'])
     iniciar.FormatarMeio(250)
+    iniciar.CriarBotao()
 
-    #textoIniciar, larguraIniciar, alturaIniciar = ut.CriarTexto("iniciar", cores['opcoes'], 36, cores['fundoOP'])
-    textoCreditos, larguraCreditos, alturaCreditos = ut.CriarTexto("Creditos", cores['opcoes'], 36, cores['fundoOP'])
+    creditos = ObjetoTexto("Creditos", cores['opcoes'], 36, "Daydream.ttf", cores['fundoOP'])
+    creditos.FormatarMeio(iniciar.posY + 100)
+    creditos.CriarBotao()
+
     textoSair, larguraSair, alturaSair = ut.CriarTexto("Sair", cores['sair'], 36, cores['fundoOP'])
 
-    #posIniciar = ut.PosTextoMeio((larguraIniciar, alturaIniciar), 250)
-    posCreditos = ut.PosTextoMeio((larguraCreditos, alturaCreditos), iniciar.posY + 100)
-
     sairX = (Tela.largura - larguraSair) // 2
-    sairY = (posCreditos[1] + 100) - (alturaSair // 2)
+    sairY = (creditos.posY + 100) - (alturaSair // 2)
 
-    botaoIniciar = pygame.Rect(iniciar.posX, iniciar.posY, iniciar.largura, iniciar.altura)
-    botaoCredito = pygame.Rect(posCreditos[0], posCreditos[1], larguraCreditos, alturaCreditos)
     botaoSair = pygame.Rect(sairX, sairY, larguraSair, alturaSair)
 
     pygame.display.set_caption("Snake Game")
@@ -118,11 +117,10 @@ def menu():
                 exit()
             elif event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if botaoIniciar.collidepoint(event.pos):
-                        return "iniciar"
-                        exit()
+                    if iniciar.botao.collidepoint(event.pos):
+                        return "Iniciar"
 
-                    elif botaoCredito.collidepoint(event.pos):
+                    elif creditos.botao.collidepoint(event.pos):
                         return "Creditos"
 
                     elif botaoSair.collidepoint(event.pos):
@@ -130,7 +128,7 @@ def menu():
                         exit()
 
         iniciar.Draw()
-        Tela.tela.blit(textoCreditos, posCreditos)
+        creditos.Draw()
         Tela.tela.blit(textoSair, (sairX, sairY))
 
         pygame.display.update()
@@ -139,9 +137,27 @@ def menu():
 def creditos():
     pygame.init()
 
+    volta = False
+
+    voltar = ObjetoTexto("Voltar", (255, 255, 255), 20, "Daydream.ttf", (255, 10, 10))
+    voltar.FormatarInferorDireito()
+    voltar.CriarBotao()
+
     while True:
         Tela.fps.tick(13)
+        Tela.tela.fill(Tela.corFundo)
         for event in pygame.event.get():
-            if event == QUIT:
+            if event.type == QUIT:
                 pygame.quit()
                 exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if voltar.botao.collidepoint(event.pos):
+                        volta = True
+
+        if volta:
+            break
+
+        voltar.Draw()
+
+        pygame.display.update()

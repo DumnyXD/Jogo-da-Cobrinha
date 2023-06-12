@@ -7,3 +7,6 @@ while True:
 
     elif opcao == "Creditos":
         telas.creditos()
+
+
+# Fernanda

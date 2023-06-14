@@ -3,9 +3,8 @@ from sys import exit
 from pygame.locals import *
 from cobrinha import Cobrinha
 from comida import Comida
-from tela import Tela
+from scream import Scream
 from texto import ObjetoTexto
-import utilidades as ut
 
 
 def jogo():
@@ -20,61 +19,53 @@ def jogo():
     cobrinha = Cobrinha(corCabeca, corCorpo, (100, 100))
 
     titulo = ObjetoTexto("Snake Game", corTitulo, 30, "Daydream.ttf")
-
-    fontTitulo = pygame.font.Font("Daydream.ttf", 30)
-    titulo = fontTitulo.render("Snake Game", True, corTitulo)
-
-    larguraTitulo, alturaTitulo = fontTitulo.size("Snake Game")
-
-    tituloX = (Tela.largura - larguraTitulo) // 2
-    tituloy = (50 - alturaTitulo) // 2
+    titulo.FormatarMeio(50)
 
     pygame.display.set_caption("Snake Game")
 
     while True:
-        Tela.fps.tick(13)
+        Scream.fps.tick(13)
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
             elif event.type == KEYDOWN:
-                if (event.key == K_UP or event.key == K_w) and cobrinha.direcao != "baixo":
-                    cobrinha.direcao = "cima"
+                if (event.key == K_UP or event.key == K_w) and cobrinha.getDirecao() != "baixo":
+                    cobrinha.setDirecao("cima")
                     break
-                elif (event.key == K_DOWN or event.key == K_s) and cobrinha.direcao != "cima":
-                    cobrinha.direcao = "baixo"
+                elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":
+                    cobrinha.setDirecao("baixo")
                     break
-                elif (
-                        event.key == K_LEFT or event.key == K_a) and cobrinha.direcao != "direita" and cobrinha.direcao is not None:
-                    cobrinha.direcao = "esquerda"
+                elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:
+                    cobrinha.setDirecao("esquerda")
                     break
-                elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.direcao != "esquerda":
-                    cobrinha.direcao = "direita"
+                elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":
+                    cobrinha.setDirecao("direita")
                     break
 
-        if cobrinha.perca == 0:
+        if cobrinha.getPerca() == 0:
             break
 
-        if comida.pos == cobrinha.corpo[0]:
+        if comida.getPos() == cobrinha.getPosCabeca():
             ponto = True
-            comida.pos = comida.novaPos()
+            comida.setPos(comida.NewPos())
 
         else:
             ponto = False
 
-        Tela.tela.fill(Tela.corFundo)
+        Scream.tela.fill(Scream.corFundo)
 
-        cobrinha.move(ponto)
+        cobrinha.Move(ponto)
 
-        pygame.draw.rect(Tela.tela, Tela.corBorda, (5, 45, Tela.largura - 10, Tela.altura - 50))
-        pygame.draw.rect(Tela.tela, Tela.corFundo, (10, 50, Tela.largura - 20, Tela.altura - 60))
+        pygame.draw.rect(Scream.tela, Scream.corBorda, (5, 45, Scream.largura - 10, Scream.altura - 50))
+        pygame.draw.rect(Scream.tela, Scream.corFundo, (10, 50, Scream.largura - 20, Scream.altura - 60))
 
-        Tela.tela.blit(titulo, (tituloX, tituloy))
+        titulo.Draw()
 
-        comida.draw(Tela.tela)
+        comida.Draw(Scream.tela)
 
-        cobrinha.desenha(Tela.tela)
+        cobrinha.Draw(Scream.tela)
 
         pygame.display.update()
 
@@ -85,8 +76,8 @@ def menu():
     cores = {
         'opcoes': (0, 200, 0),
         'sair': (255, 10, 10),
-        'fundoOP': Tela.corBorda,
-        'fundo': Tela.corFundo
+        'fundoOP': Scream.corBorda,
+        'fundo': Scream.corFundo
     }
 
     iniciar = ObjetoTexto("Iniciar", cores['opcoes'], 36, "Daydream.ttf", cores['fundoOP'])
@@ -97,19 +88,16 @@ def menu():
     creditos.FormatarMeio(iniciar.posY + 100)
     creditos.CriarBotao()
 
-    textoSair, larguraSair, alturaSair = ut.CriarTexto("Sair", cores['sair'], 36, cores['fundoOP'])
-
-    sairX = (Tela.largura - larguraSair) // 2
-    sairY = (creditos.posY + 100) - (alturaSair // 2)
-
-    botaoSair = pygame.Rect(sairX, sairY, larguraSair, alturaSair)
+    sair = ObjetoTexto("Sair", cores['sair'],36,"Daydream.ttf", cores['fundoOP'])
+    sair.FormatarMeio(creditos.posY+100)
+    sair.CriarBotao()
 
     pygame.display.set_caption("Snake Game")
 
     while True:
-        Tela.fps.tick(13)
+        Scream.fps.tick(13)
 
-        Tela.tela.fill(Tela.corFundo)
+        Scream.tela.fill(Scream.corFundo)
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -123,13 +111,13 @@ def menu():
                     elif creditos.botao.collidepoint(event.pos):
                         return "Creditos"
 
-                    elif botaoSair.collidepoint(event.pos):
+                    elif sair.botao.collidepoint(event.pos):
                         pygame.quit()
                         exit()
 
         iniciar.Draw()
         creditos.Draw()
-        Tela.tela.blit(textoSair, (sairX, sairY))
+        sair.Draw()
 
         pygame.display.update()
 
@@ -144,8 +132,8 @@ def creditos():
     voltar.CriarBotao()
 
     while True:
-        Tela.fps.tick(13)
-        Tela.tela.fill(Tela.corFundo)
+        Scream.fps.tick(13)
+        Scream.tela.fill(Scream.corFundo)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()

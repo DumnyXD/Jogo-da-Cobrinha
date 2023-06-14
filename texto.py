@@ -1,5 +1,5 @@
 import pygame
-from tela import Tela
+from scream import Scream
 
 
 class ObjetoTexto:
@@ -21,15 +21,15 @@ class ObjetoTexto:
             self.render = self.font.render(self.texto, True, self.cor, self.fundo)
 
     def Draw(self):
-        Tela.tela.blit(self.render, (self.posX, self.posY))
+        Scream.tela.blit(self.render, (self.posX, self.posY))
 
     def FormatarMeio(self, Y: int):
-        self.posX = (Tela.largura - self.largura) // 2
+        self.posX = (Scream.largura - self.largura) // 2
         self.posY = Y - (self.altura // 2)
 
     def FormatarInferorDireito(self):
-        self.posX = (Tela.largura - self.largura)-20
-        self.posY = (Tela.altura-self.altura)-20
+        self.posX = (Scream.largura - self.largura) - 20
+        self.posY = (Scream.altura - self.altura) - 20
 
     def CriarBotao(self):
         self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)

@@ -1,9 +1,6 @@
 import random
 import pygame
 
-#Wallysson
-#Maysa
-#Fernanda
 
 class Scream:
     """Aqui está todas as definições que envolve a tela, incluindo as cores que vão ser usadas"""
@@ -25,7 +22,6 @@ class Cobrinha:
     def __init__(self, posInicial):
         self.__corCorpo = (0, 255, 0)
         self.__corCabeca = (0, 230, 0)
-        self.__tamanho = 10
         self.__corpo = [posInicial, (posInicial[0] - 10, posInicial[1]), (posInicial[0] - 20, posInicial[1])]
         self.__direcao = None
         self.__perca = True
@@ -49,13 +45,13 @@ class Cobrinha:
         if self.__direcao:
             x, y = self.__corpo[0]
             if self.__direcao == "cima":
-                y -= self.__tamanho
+                y -= 10
             elif self.__direcao == "baixo":
-                y += self.__tamanho
+                y += 10
             elif self.__direcao == "esquerda":
-                x -= self.__tamanho
+                x -= 10
             elif self.__direcao == "direita":
-                x += self.__tamanho
+                x += 10
 
             if x < 10:
                 self.__perca = False
@@ -77,10 +73,10 @@ class Cobrinha:
     def Draw(self, tela):
         for pos in self.__corpo:
             if pos == self.__corpo[0]:
-                pygame.draw.rect(tela, self.__corCabeca, (pos[0], pos[1], self.__tamanho, self.__tamanho))
+                pygame.draw.rect(tela, self.__corCabeca, (pos[0], pos[1], 10, 10))
 
             else:
-                pygame.draw.rect(tela, self.__corCorpo, (pos[0], pos[1], self.__tamanho, self.__tamanho))
+                pygame.draw.rect(tela, self.__corCorpo, (pos[0], pos[1], 10, 10))
 
 
 class Comida:
@@ -135,4 +131,3 @@ class ObjetoTexto:
 
     def CriarBotao(self):
         self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)
-

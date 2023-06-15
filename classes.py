@@ -1,6 +1,9 @@
 import random
 import pygame
 
+#Wallysson
+#Maysa
+#Fernanda
 
 class Scream:
     """Aqui está todas as definições que envolve a tela, incluindo as cores que vão ser usadas"""

@@ -1,7 +1,11 @@
 import random
 import pygame
 
-#Maysa
+
+#Maysa TESTEEEEEEE
+
+#Fernanda
+
 
 class Scream:
     """Aqui está todas as definições que envolve a tela, incluindo as cores que vão ser usadas"""
@@ -133,3 +137,4 @@ class ObjetoTexto:
 
     def CriarBotao(self):
         self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)
+

@@ -126,8 +126,8 @@ class ObjetoTexto:
         self.posY = Y - (self.altura // 2)
 
     def FormatarInferorDireito(self):
-        self.posX = (Scream.largura - self.largura) - 20
-        self.posY = (Scream.altura - self.altura) - 20
+        self.posX = (Scream.largura - self.largura) - 10
+        self.posY = (Scream.altura - self.altura) - 10
 
     def CriarBotao(self):
         self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)

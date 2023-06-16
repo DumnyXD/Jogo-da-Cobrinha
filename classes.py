@@ -136,3 +136,6 @@ class ObjetoTexto:
         self.posX = (Scream.largura - self.largura) - 10
         self.posY = 25 - (self.altura // 2)
 
+    def FormararSuperiorEscerdo(self):
+        self.posX = 10
+        self.posY = 25 - (self.altura // 2)

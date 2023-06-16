@@ -3,11 +3,10 @@ from classes import *
 from pygame.locals import *
 
 
-def jogo():
+def jogo(maiorPontuacao: int):
     pygame.init()
 
-    pontuacao = 0 
-
+    pontuacao = 0
 
     comida = Comida()
     cobrinha = Cobrinha((100, 100))
@@ -18,10 +17,13 @@ def jogo():
     pygame.display.set_caption("Snake Game")
 
     while True:
-        Scream.fps.tick(8)
+        Scream.fps.tick(13)
 
-        score = ObjetoTexto(f"score: {pontuacao}", Scream.branco, 17, "Daydream.ttf" )
+        score = ObjetoTexto(f"score: {pontuacao}", Scream.branco, 17, "Daydream.ttf")
         score.FormararSuperiorDireito()
+
+        record = ObjetoTexto(f"record: {maiorPontuacao}", Scream.branco,17,"Daydream.ttf")
+        record.FormararSuperiorEscerdo()
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -46,6 +48,8 @@ def jogo():
             ponto = True
             pontuacao += 10
             comida.setPos(comida.NewPos())
+            if maiorPontuacao < pontuacao:
+                maiorPontuacao = pontuacao
 
         else:
             ponto = False
@@ -53,7 +57,7 @@ def jogo():
         cobrinha.Move(ponto)
 
         if not cobrinha.getPerca():
-            break
+            return maiorPontuacao
 
         Scream.tela.fill(Scream.corFundo)
 
@@ -62,6 +66,7 @@ def jogo():
 
         titulo.Draw()
         score.Draw()
+        record.Draw()
 
         comida.Draw(Scream.tela)
 
@@ -146,10 +151,11 @@ def creditos():
         pygame.display.update()
 
 
+maiorPontuacao = 0
 while True:
     opcao = menu()
     if opcao == "Iniciar":
-        jogo()
+        maiorPontuacao = jogo(maiorPontuacao)
 
     elif opcao == "Creditos":
         creditos()

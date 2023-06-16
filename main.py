@@ -28,7 +28,8 @@ def jogo():
                 elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":
                     cobrinha.setDirecao("baixo")
                     break
-                elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:
+                elif (
+                        event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:
                     cobrinha.setDirecao("esquerda")
                     break
                 elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":
@@ -44,7 +45,7 @@ def jogo():
 
         cobrinha.Move(ponto)
 
-        if cobrinha.getPerca() == False:
+        if not cobrinha.getPerca():
             break
 
         Scream.tela.fill(Scream.corFundo)
@@ -110,6 +111,8 @@ def creditos():
     pygame.init()
 
     volta = False
+
+    nomeWallysson = ObjetoTexto("Wallysson - 323130386", Scream.branco, 20, "Daydream.ttf")
 
     voltar = ObjetoTexto("Voltar", Scream.branco, 20, "Daydream.ttf", Scream.vermelho)
     voltar.FormatarInferorDireito()

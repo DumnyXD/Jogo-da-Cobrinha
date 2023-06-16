@@ -131,3 +131,8 @@ class ObjetoTexto:
 
     def CriarBotao(self):
         self.botao = pygame.Rect(self.posX, self.posY, self.largura, self.altura)
+
+    def FormararSuperiorDireito(self):
+        self.posX = (Scream.largura - self.largura) - 10
+        self.posY = 25 - (self.altura // 2)
+

@@ -6,16 +6,22 @@ from pygame.locals import *
 def jogo():
     pygame.init()
 
+    pontuacao = 0 
+
+
     comida = Comida()
     cobrinha = Cobrinha((100, 100))
 
-    titulo = ObjetoTexto("Snake Game", Scream.corTitulo, 30, "Daydream.ttf")
+    titulo = ObjetoTexto("Snake", Scream.corTitulo, 25, "Daydream.ttf")
     titulo.FormatarMeio(25)
 
     pygame.display.set_caption("Snake Game")
 
     while True:
-        Scream.fps.tick(13)
+        Scream.fps.tick(8)
+
+        score = ObjetoTexto(f"score: {pontuacao}", Scream.branco, 17, "Daydream.ttf" )
+        score.FormararSuperiorDireito()
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -37,6 +43,7 @@ def jogo():
 
         if comida.getPos() == cobrinha.getPosCabeca():
             ponto = True
+            pontuacao += 10
             comida.setPos(comida.NewPos())
 
         else:
@@ -53,6 +60,7 @@ def jogo():
         pygame.draw.rect(Scream.tela, Scream.corFundo, (10, 50, Scream.largura - 20, Scream.altura - 60))
 
         titulo.Draw()
+        score.Draw()
 
         comida.Draw(Scream.tela)
 

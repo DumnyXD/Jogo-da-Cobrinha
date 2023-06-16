@@ -1,3 +1,6 @@
-Esse projeto é um teste de como funciona a biblioteca pygame, pretendo ir incrementando com o tempo para deixar o mais completo possivel. (aceito sugestões!!)
+dev:  walliysson RA , Maysa Santos RA , Fernada Prado RA323116602
 
-Teste Fernandas
+Isntruções: Para o projeto funcionar deve ser usado o arquivo main.py para rodar.
+Necessita do python na versão 3.9 (ou mais) e a biblioteca pygame.
+
+

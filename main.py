@@ -3,6 +3,11 @@ from classes import *
 from pygame.locals import *
 
 
+def salvarPontuacao(nome_arquivo, pontuacao):
+    with open(nome_arquivo, "w") as arquivo:
+        arquivo.write(str(pontuacao))
+
+
 def jogo(maiorPontuacao: int):
     """
     Função que implementa a lógica principal do jogo Snake.
@@ -89,7 +94,7 @@ def menu():
     Função que implementa o menu principal do jogo Snake.
 
     Retorna:
-    - str: A opção selecionada no menu (Iniciar ou Creditos).
+    - str: A opção selecionada no menu (Iniciar, ou Creditos).
 
     """
     pygame.init()  # Inicializa o módulo pygame
@@ -200,13 +205,15 @@ def creditos():
         pygame.display.update()  # Atualiza a tela do jogo
 
 
-maiorPontuacao = 0  # Variável que armazena a maior pontuação alcançada pelo jogador
+with open("maior_pontuacao.txt", "r") as f:
+    maiorPontuacao = max(int(line.strip()) for line in f)
 
 while True:
     opcao = menu()  # Chama a função menu() para exibir o menu principal e obter a opção escolhida pelo jogador
 
     if opcao == "Iniciar":  # Se a opção escolhida for "Iniciar"
         maiorPontuacao = jogo(maiorPontuacao)  # Chama a função jogo() passando a maior pontuação atual como argumento e atualiza a maior pontuação
+        salvarPontuacao("maior_pontuacao.txt", maiorPontuacao)
 
     elif opcao == "Creditos":  # Se a opção escolhida for "Creditos"
         creditos()  # Chama a função creditos() para exibir a tela de créditos

@@ -4,7 +4,7 @@ DEV's:
     Fernada Prado - RA:323116602
 
 Descrição:
-    Projeto feito para a apresentação A3 do professor Elson. A proposta é ser um jogo divertido que possa garantir-
+    Projeto feito para a apresentação A3 do professor Elson. A proposta é ser um jogo divertido que possa garantir
     intretenimento de qualidade, com sistema de pontuação que salva a maior pontuação desde que abriu o arquivo.
 
 Requisitos:

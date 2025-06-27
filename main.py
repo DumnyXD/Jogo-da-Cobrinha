@@ -1,5 +1,9 @@
 from sys import exit
-from classes import *
+import pygame
+from scream import Scream
+from cobrinha import Cobrinha
+from comida import Comida
+from objeto_texto import ObjetoTexto
 from pygame.locals import *
 
 

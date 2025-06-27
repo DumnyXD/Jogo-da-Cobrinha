@@ -38,11 +38,15 @@ def jogo(maiorPontuacao: int):
     cobrinha = Cobrinha((100, 100))  # Cria uma instância da classe Cobrinha com posição inicial (100, 100)
     logger.info(f"Comida criada em {comida.getPos()}, Cobrinha criada em {cobrinha.getPosCabeca()}")
 
-    titulo = ObjetoTexto("Snake", Scream.corTitulo, 25, "assets/Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
+    titulo = ObjetoTexto("Snake", Scream.corTitulo, 25, "Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
     titulo.FormatarMeio(25)  # Formata o objeto de texto para ser exibido no centro da tela
 
     pygame.display.set_caption("Snake Game")  # Define o título da janela do jogo como "Snake Game"
     logger.info("Título da janela definido como 'Snake Game'.")
+
+    pausado = False
+    texto_pausado = ObjetoTexto("PAUSADO", Scream.branco, 40, "Daydream.ttf")
+    texto_pausado.FormatarMeio(Scream.altura // 2)
 
     while True:
         Scream.fps.tick(Scream.FPS)  # Limita o FPS do jogo
@@ -60,41 +64,46 @@ def jogo(maiorPontuacao: int):
                 exit()  # Encerra o programa
             elif event.type == KEYDOWN:  # Se o evento for uma tecla pressionada
                 logger.info(f"Tecla pressionada: {event.key}")
-                if (event.key == K_UP or event.key == K_w) and cobrinha.getDirecao() != "baixo":  # Se a tecla pressionada for a seta para cima ou a tecla "w" e a direção da cobrinha não for "baixo"
-                    cobrinha.setDirecao("cima")  # Define a direção da cobrinha como "cima"
-                    logger.info("Direção da cobrinha alterada para CIMA.")
-                    break  # Sai do loop
-                elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":  # Se a tecla pressionada for a seta para baixo ou a tecla "s" e a direção da cobrinha não for "cima"
-                    cobrinha.setDirecao("baixo")  # Define a direção da cobrinha como "baixo"
-                    logger.info("Direção da cobrinha alterada para BAIXO.")
-                    break  # Sai do loop
-                elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:  # Se a tecla pressionada for a seta para a esquerda ou a tecla "a", a direção da cobrinha não for "direita" e a direção da cobrinha não for None
-                    cobrinha.setDirecao("esquerda")  # Define a direção da cobrinha como "esquerda"
-                    logger.info("Direção da cobrinha alterada para ESQUERDA.")
-                    break  # Sai do loop
-                elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":  # Se a tecla pressionada for a seta para a direita ou a tecla "d" e a direção da cobrinha não for "esquerda"
-                    cobrinha.setDirecao("direita")  # Define a direção da cobrinha como "direita"
-                    logger.info("Direção da cobrinha alterada para DIREITA.")
-                    break  # Sai do loop
+                if event.key == K_p:
+                    pausado = not pausado
+                    logger.info(f"Jogo {'PAUSADO' if pausado else 'RESUMIDO'}.")
+                if not pausado:
+                    if (event.key == K_UP or event.key == K_w) and cobrinha.getDirecao() != "baixo":  # Se a tecla pressionada for a seta para cima ou a tecla "w" e a direção da cobrinha não for "baixo"
+                        cobrinha.setDirecao("cima")  # Define a direção da cobrinha como "cima"
+                        logger.info("Direção da cobrinha alterada para CIMA.")
+                        break  # Sai do loop
+                    elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":  # Se a tecla pressionada for a seta para baixo ou a tecla "s" e a direção da cobrinha não for "cima"
+                        cobrinha.setDirecao("baixo")  # Define a direção da cobrinha como "baixo"
+                        logger.info("Direção da cobrinha alterada para BAIXO.")
+                        break  # Sai do loop
+                    elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:  # Se a tecla pressionada for a seta para a esquerda ou a tecla "a", a direção da cobrinha não for "direita" e a direção da cobrinha não for None
+                        cobrinha.setDirecao("esquerda")  # Define a direção da cobrinha como "esquerda"
+                        logger.info("Direção da cobrinha alterada para ESQUERDA.")
+                        break  # Sai do loop
+                    elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":  # Se a tecla pressionada for a seta para a direita ou a tecla "d" e a direção da cobrinha não for "esquerda"
+                        cobrinha.setDirecao("direita")  # Define a direção da cobrinha como "direita"
+                        logger.info("Direção da cobrinha alterada para DIREITA.")
+                        break  # Sai do loop
 
-        if comida.getPos() == cobrinha.getPosCabeca():  # Se a posição da comida for igual à posição da cabeça da cobrinha
-            logger.info("Comida consumida!")
-            ponto = True  # Indica que a cobrinha ganhou um ponto
-            pontuacao += 10  # Aumenta a pontuação em 10
-            comida.setPos(comida.NewPos())  # Define uma nova posição para a comida
-            logger.info(f"Nova pontuação: {pontuacao}. Nova posição da comida: {comida.getPos()}")
-            if maiorPontuacao < pontuacao:  # Se a pontuação atual for maior do que a maior pontuação já alcançada
-                maiorPontuacao = pontuacao  # Atualiza a maior pontuação
-                logger.info(f"Nova maior pontuação: {maiorPontuacao}")
+        if not pausado:
+            if comida.getPos() == cobrinha.getPosCabeca():  # Se a posição da comida for igual à posição da cabeça da cobrinha
+                logger.info("Comida consumida!")
+                ponto = True  # Indica que a cobrinha ganhou um ponto
+                pontuacao += 10  # Aumenta a pontuação em 10
+                comida.setPos(comida.NewPos())  # Define uma nova posição para a comida
+                logger.info(f"Nova pontuação: {pontuacao}. Nova posição da comida: {comida.getPos()}")
+                if maiorPontuacao < pontuacao:  # Se a pontuação atual for maior do que a maior pontuação já alcançada
+                    maiorPontuacao = pontuacao  # Atualiza a maior pontuação
+                    logger.info(f"Nova maior pontuação: {maiorPontuacao}")
 
-        else:
-            ponto = False  # Indica que a cobrinha não ganhou um ponto
+            else:
+                ponto = False  # Indica que a cobrinha não ganhou um ponto
 
-        cobrinha.Move(ponto)  # Move a cobrinha de acordo com a direção e se ganhou ponto ou não
+            cobrinha.Move(ponto)  # Move a cobrinha de acordo com a direção e se ganhou ponto ou não
 
-        if not cobrinha.getPerca():  # Se a cobrinha não perdeu o jogo
-            logger.info(f"Game Over! Pontuação final: {pontuacao}. Maior pontuação: {maiorPontuacao}")
-            return maiorPontuacao  # Retorna a nova maior pontuação alcançada no jogo
+            if not cobrinha.getPerca():  # Se a cobrinha não perdeu o jogo
+                logger.info(f"Game Over! Pontuação final: {pontuacao}. Maior pontuação: {maiorPontuacao}")
+                return maiorPontuacao  # Retorna a nova maior pontuação alcançada no jogo
 
         Scream.tela.fill(Scream.corFundo)  # Preenche a tela com a cor de fundo
 
@@ -108,6 +117,9 @@ def jogo(maiorPontuacao: int):
         comida.Draw(Scream.tela)  # Desenha a comida na tela
 
         cobrinha.Draw(Scream.tela)  # Desenha a cobrinha na tela
+
+        if pausado:
+            texto_pausado.Draw()
 
         pygame.display.update()  # Atualiza a tela do jogo
 
@@ -123,21 +135,21 @@ def menu():
     logger.info("Iniciando menu...")
     pygame.init()  # Inicializa o módulo pygame
 
-    titulo1 = ObjetoTexto("Snake", Scream.corTitulo, 60, "assets/Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
+    titulo1 = ObjetoTexto("Snake", Scream.corTitulo, 60, "Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
     titulo1.FormatarMeio(80)  # Formata o objeto de texto para ser exibido no centro da tela
 
-    titulo2 = ObjetoTexto("Game", Scream.corTitulo, 60, "assets/Daydream.ttf")  # Cria um objeto de texto com a palavra "Game"
+    titulo2 = ObjetoTexto("Game", Scream.corTitulo, 60, "Daydream.ttf")  # Cria um objeto de texto com a palavra "Game"
     titulo2.FormatarMeio(titulo1.posY + titulo1.altura + 40)  # Formata o objeto de texto para ser exibido abaixo do título "Snake"
 
-    iniciar = ObjetoTexto("Iniciar", Scream.verde, 36, "assets/Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Iniciar"
+    iniciar = ObjetoTexto("Iniciar", Scream.verde, 36, "Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Iniciar"
     iniciar.FormatarMeio(300)  # Formata o objeto de texto para ser exibido na posição vertical 300
     iniciar.CriarBotao()  # Cria um botão com base no objeto de texto
 
-    creditos = ObjetoTexto("Creditos", Scream.verde, 36, "assets/Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Creditos"
+    creditos = ObjetoTexto("Creditos", Scream.verde, 36, "Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Creditos"
     creditos.FormatarMeio(iniciar.posY + 80)  # Formata o objeto de texto para ser exibido abaixo da opção "Iniciar"
     creditos.CriarBotao()  # Cria um botão com base no objeto de texto
 
-    sair = ObjetoTexto("Sair", Scream.vermelho, 36, "assets/Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Sair"
+    sair = ObjetoTexto("Sair", Scream.vermelho, 36, "Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Sair"
     sair.FormatarMeio(creditos.posY + 80)  # Formata o objeto de texto para ser exibido abaixo da opção "Creditos"
     sair.CriarBotao()  # Cria um botão com base no objeto de texto
 
@@ -193,19 +205,19 @@ def creditos():
 
     volta = False  # Variável que indica se deve voltar ao menu principal
 
-    devs = ObjetoTexto("Dev's:", Scream.verde, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com o título "Dev's"
+    devs = ObjetoTexto("Dev's:", Scream.verde, 20, "Daydream.ttf")  # Cria um objeto de texto com o título "Dev's"
     devs.FormararSuperiorEscerdo()  # Formata o objeto de texto para ser exibido no canto superior esquerdo da tela
 
-    Wallysson = ObjetoTexto("   Wallysson - RA:323130386", Scream.branco, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Wallysson
+    Wallysson = ObjetoTexto("   Wallysson - RA:323130386", Scream.branco, 20, "Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Wallysson
     Wallysson.FormararSuperiorEscerdo(devs.posY + (devs.altura + 30))  # Formata o objeto de texto para ser exibido abaixo do título "Dev's"
 
-    Fernanda = ObjetoTexto("   Fernanda - RA:323116602", Scream.branco, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Fernanda
+    Fernanda = ObjetoTexto("   Fernanda - RA:323116602", Scream.branco, 20, "Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Fernanda
     Fernanda.FormararSuperiorEscerdo(Wallysson.posY + (Wallysson.altura + 30))  # Formata o objeto de texto para ser exibido abaixo das informações do desenvolvedor Wallysson
 
-    Maysa = ObjetoTexto("   Maysa - RA:323120206", Scream.branco, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Maysa
+    Maysa = ObjetoTexto("   Maysa - RA:323120206", Scream.branco, 20, "Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Maysa
     Maysa.FormararSuperiorEscerdo(Fernanda.posY + (Fernanda.altura + 30))  # Formata o objeto de texto para ser exibido abaixo das informações do desenvolvedor Fernanda
 
-    voltar = ObjetoTexto("Voltar", Scream.branco, 20, "assets/Daydream.ttf", Scream.vermelho)  # Cria um objeto de texto com a opção "Voltar"
+    voltar = ObjetoTexto("Voltar", Scream.branco, 20, "Daydream.ttf", Scream.vermelho)  # Cria um objeto de texto com a opção "Voltar"
     voltar.FormatarInferorDireito()  # Formata o objeto de texto para ser exibido no canto inferior direito da tela
     voltar.CriarBotao()  # Cria um botão com base no objeto de texto
 

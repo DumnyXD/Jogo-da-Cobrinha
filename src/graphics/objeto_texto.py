@@ -1,4 +1,5 @@
 import pygame
+import os
 from src.config.game_config import Scream
 from src.utils.logger import Logger
 
@@ -37,7 +38,8 @@ class ObjetoTexto:
                  fundo: tuple[int, int, int] = None):
         self.fonte = fonte  # Nome do arquivo de fonte a ser utilizado
         self.tamanho = tamanho  # Tamanho da fonte em pixels
-        self.font = pygame.font.Font(self.fonte, self.tamanho)  # Objeto de fonte do Pygame
+        font_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', self.fonte)
+        self.font = pygame.font.Font(font_path, self.tamanho)  # Objeto de fonte do Pygame
         self.texto = texto  # Conteúdo do texto
         self.cor = cor  # Cor do texto
         self.fundo = fundo  # Cor de fundo do texto (opcional)

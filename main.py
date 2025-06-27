@@ -1,4 +1,5 @@
 from sys import exit
+import pygame
 from scream import Scream
 from cobrinha import Cobrinha
 from comida import Comida

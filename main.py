@@ -5,9 +5,13 @@ from cobrinha import Cobrinha
 from comida import Comida
 from objeto_texto import ObjetoTexto
 from pygame.locals import *
+from logger import Logger
+
+logger = Logger()
 
 
 def salvarPontuacao(nome_arquivo, pontuacao):
+    logger.info(f"Salvando pontuação {pontuacao} no arquivo {nome_arquivo}")
     with open(nome_arquivo, "w") as arquivo:
         arquivo.write(str(pontuacao))
 
@@ -23,20 +27,25 @@ def jogo(maiorPontuacao: int):
     - int: A nova maior pontuação alcançada no jogo.
     """
 
+    logger.info("Iniciando jogo...")
     pygame.init()  # Inicializa o módulo pygame
+    logger.info("Pygame inicializado.")
 
     pontuacao = 0  # Inicializa a pontuação do jogo como zero
+    logger.info(f"Pontuação inicial: {pontuacao}")
 
     comida = Comida()  # Cria uma instância da classe Comida
     cobrinha = Cobrinha((100, 100))  # Cria uma instância da classe Cobrinha com posição inicial (100, 100)
+    logger.info(f"Comida criada em {comida.getPos()}, Cobrinha criada em {cobrinha.getPosCabeca()}")
 
     titulo = ObjetoTexto("Snake", Scream.corTitulo, 25, "Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
     titulo.FormatarMeio(25)  # Formata o objeto de texto para ser exibido no centro da tela
 
     pygame.display.set_caption("Snake Game")  # Define o título da janela do jogo como "Snake Game"
+    logger.info("Título da janela definido como 'Snake Game'.")
 
     while True:
-        Scream.fps.tick(13)  # Limita o FPS do jogo a 13 (aproximadamente 13 quadros por segundo)
+        Scream.fps.tick(Scream.FPS)  # Limita o FPS do jogo
 
         score = ObjetoTexto(f"score: {pontuacao}", Scream.branco, 17, "Daydream.ttf")  # Cria um objeto de texto com a pontuação atual
         score.FormararSuperiorDireito()  # Formata o objeto de texto para ser exibido no canto superior direito da tela
@@ -46,28 +55,37 @@ def jogo(maiorPontuacao: int):
 
         for event in pygame.event.get():
             if event.type == QUIT:  # Se o evento for QUIT (fechar a janela)
+                logger.info("Evento QUIT detectado. Encerrando jogo.")
                 pygame.quit()  # Encerra o pygame
                 exit()  # Encerra o programa
             elif event.type == KEYDOWN:  # Se o evento for uma tecla pressionada
+                logger.info(f"Tecla pressionada: {event.key}")
                 if (event.key == K_UP or event.key == K_w) and cobrinha.getDirecao() != "baixo":  # Se a tecla pressionada for a seta para cima ou a tecla "w" e a direção da cobrinha não for "baixo"
                     cobrinha.setDirecao("cima")  # Define a direção da cobrinha como "cima"
+                    logger.info("Direção da cobrinha alterada para CIMA.")
                     break  # Sai do loop
                 elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":  # Se a tecla pressionada for a seta para baixo ou a tecla "s" e a direção da cobrinha não for "cima"
                     cobrinha.setDirecao("baixo")  # Define a direção da cobrinha como "baixo"
+                    logger.info("Direção da cobrinha alterada para BAIXO.")
                     break  # Sai do loop
                 elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:  # Se a tecla pressionada for a seta para a esquerda ou a tecla "a", a direção da cobrinha não for "direita" e a direção da cobrinha não for None
                     cobrinha.setDirecao("esquerda")  # Define a direção da cobrinha como "esquerda"
+                    logger.info("Direção da cobrinha alterada para ESQUERDA.")
                     break  # Sai do loop
                 elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":  # Se a tecla pressionada for a seta para a direita ou a tecla "d" e a direção da cobrinha não for "esquerda"
                     cobrinha.setDirecao("direita")  # Define a direção da cobrinha como "direita"
+                    logger.info("Direção da cobrinha alterada para DIREITA.")
                     break  # Sai do loop
 
         if comida.getPos() == cobrinha.getPosCabeca():  # Se a posição da comida for igual à posição da cabeça da cobrinha
+            logger.info("Comida consumida!")
             ponto = True  # Indica que a cobrinha ganhou um ponto
             pontuacao += 10  # Aumenta a pontuação em 10
             comida.setPos(comida.NewPos())  # Define uma nova posição para a comida
+            logger.info(f"Nova pontuação: {pontuacao}. Nova posição da comida: {comida.getPos()}")
             if maiorPontuacao < pontuacao:  # Se a pontuação atual for maior do que a maior pontuação já alcançada
                 maiorPontuacao = pontuacao  # Atualiza a maior pontuação
+                logger.info(f"Nova maior pontuação: {maiorPontuacao}")
 
         else:
             ponto = False  # Indica que a cobrinha não ganhou um ponto
@@ -75,6 +93,7 @@ def jogo(maiorPontuacao: int):
         cobrinha.Move(ponto)  # Move a cobrinha de acordo com a direção e se ganhou ponto ou não
 
         if not cobrinha.getPerca():  # Se a cobrinha não perdeu o jogo
+            logger.info(f"Game Over! Pontuação final: {pontuacao}. Maior pontuação: {maiorPontuacao}")
             return maiorPontuacao  # Retorna a nova maior pontuação alcançada no jogo
 
         Scream.tela.fill(Scream.corFundo)  # Preenche a tela com a cor de fundo
@@ -101,6 +120,7 @@ def menu():
     - str: A opção selecionada no menu (Iniciar, ou Creditos).
 
     """
+    logger.info("Iniciando menu...")
     pygame.init()  # Inicializa o módulo pygame
 
     titulo1 = ObjetoTexto("Snake", Scream.corTitulo, 60, "Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
@@ -122,25 +142,31 @@ def menu():
     sair.CriarBotao()  # Cria um botão com base no objeto de texto
 
     pygame.display.set_caption("Snake Game")  # Define o título da janela do jogo como "Snake Game"
+    logger.info("Menu inicializado. Opções: Iniciar, Creditos, Sair.")
 
     while True:
-        Scream.fps.tick(13)  # Limita o FPS do jogo a 13 (aproximadamente 13 quadros por segundo)
+        Scream.fps.tick(Scream.FPS)  # Limita o FPS do jogo
 
         Scream.tela.fill(Scream.corFundo)  # Preenche a tela com a cor de fundo
 
         for event in pygame.event.get():
             if event.type == QUIT:  # Se o evento for QUIT (fechar a janela)
+                logger.info("Evento QUIT detectado no menu. Encerrando programa.")
                 pygame.quit()  # Encerra o pygame
                 exit()  # Encerra o programa
             elif event.type == MOUSEBUTTONDOWN:  # Se o evento for um clique do mouse
+                logger.info(f"Clique do mouse detectado em {event.pos}.")
                 if event.button == 1:  # Se o botão pressionado for o botão esquerdo do mouse
                     if iniciar.botao.collidepoint(event.pos):  # Se o clique foi dentro do botão "Iniciar"
+                        logger.info("Botão 'Iniciar' clicado.")
                         return "Iniciar"  # Retorna a opção "Iniciar"
 
                     elif creditos.botao.collidepoint(event.pos):  # Se o clique foi dentro do botão "Creditos"
+                        logger.info("Botão 'Creditos' clicado.")
                         return "Creditos"  # Retorna a opção "Creditos"
 
                     elif sair.botao.collidepoint(event.pos):  # Se o clique foi dentro do botão "Sair"
+                        logger.info("Botão 'Sair' clicado. Encerrando programa.")
                         pygame.quit()  # Encerra o pygame
                         exit()  # Encerra o programa
 
@@ -162,6 +188,7 @@ def creditos():
     - None
 
     """
+    logger.info("Iniciando tela de créditos...")
     pygame.init()  # Inicializa o módulo pygame
 
     volta = False  # Variável que indica se deve voltar ao menu principal
@@ -182,21 +209,27 @@ def creditos():
     voltar.FormatarInferorDireito()  # Formata o objeto de texto para ser exibido no canto inferior direito da tela
     voltar.CriarBotao()  # Cria um botão com base no objeto de texto
 
+    logger.info("Tela de créditos inicializada.")
+
     while True:
-        Scream.fps.tick(13)  # Limita o FPS do jogo a 13 (aproximadamente 13 quadros por segundo)
+        Scream.fps.tick(Scream.FPS)  # Limita o FPS do jogo
 
         Scream.tela.fill(Scream.corFundo)  # Preenche a tela com a cor de fundo
 
         for event in pygame.event.get():
             if event.type == QUIT:  # Se o evento for QUIT (fechar a janela)
+                logger.info("Evento QUIT detectado nos créditos. Encerrando programa.")
                 pygame.quit()  # Encerra o pygame
                 exit()  # Encerra o programa
             if event.type == MOUSEBUTTONDOWN:  # Se o evento for um clique do mouse
+                logger.info(f"Clique do mouse detectado em {event.pos} nos créditos.")
                 if event.button == 1:  # Se o botão pressionado for o botão esquerdo do mouse
                     if voltar.botao.collidepoint(event.pos):  # Se o clique foi dentro do botão "Voltar"
+                        logger.info("Botão 'Voltar' clicado nos créditos.")
                         volta = True
 
         if volta:
+            logger.info("Saindo da tela de créditos.")
             break  # Sai do loop e retorna ao menu principal
 
         devs.Draw()  # Desenha o título "Dev's" na tela
@@ -211,13 +244,18 @@ def creditos():
 
 with open("maior_pontuacao.txt", "r") as f:
     maiorPontuacao = max(int(line.strip()) for line in f)
+logger.info(f"Maior pontuação carregada: {maiorPontuacao}")
 
 while True:
+    logger.info("Iniciando loop principal do jogo.")
     opcao = menu()  # Chama a função menu() para exibir o menu principal e obter a opção escolhida pelo jogador
+    logger.info(f"Opção selecionada no menu: {opcao}")
 
     if opcao == "Iniciar":  # Se a opção escolhida for "Iniciar"
+        logger.info("Iniciando jogo a partir do menu.")
         maiorPontuacao = jogo(maiorPontuacao)  # Chama a função jogo() passando a maior pontuação atual como argumento e atualiza a maior pontuação
         salvarPontuacao("maior_pontuacao.txt", maiorPontuacao)
 
     elif opcao == "Creditos":  # Se a opção escolhida for "Creditos"
+        logger.info("Acessando tela de créditos.")
         creditos()  # Chama a função creditos() para exibir a tela de créditos

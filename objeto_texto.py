@@ -1,5 +1,8 @@
 import pygame
 from scream import Scream
+from logger import Logger
+
+logger = Logger()
 
 
 class ObjetoTexto:
@@ -46,6 +49,7 @@ class ObjetoTexto:
             self.render = self.font.render(self.texto, True, self.cor)
         else:
             self.render = self.font.render(self.texto, True, self.cor, self.fundo)
+        logger.info(f"ObjetoTexto criado: \"{self.texto}\" (Tamanho: {self.tamanho}, Cor: {self.cor})")
 
     def Draw(self):
         """Desenha o texto na tela."""

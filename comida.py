@@ -1,5 +1,8 @@
 import random
 import pygame
+from logger import Logger
+
+logger = Logger()
 
 
 class Comida:
@@ -21,6 +24,7 @@ class Comida:
     def __init__(self):
         self.__cor = (255, 0, 0)  # Definição da cor da comida
         self.__pos = self.NewPos()  # Geração de uma posição inicial para a comida
+        logger.info(f"Comida inicializada em {self.__pos}")
 
     def setPos(self, pos: tuple[int, int]):
         """Define a posição da comida."""
@@ -39,7 +43,9 @@ class Comida:
         """
         x = random.randint(10, 620 - 10)
         y = random.randint(50, 460 - 10)
-        return x // 10 * 10, y // 10 * 10
+        new_pos = x // 10 * 10, y // 10 * 10
+        logger.info(f"Gerando nova posição para a comida: {new_pos}")
+        return new_pos
 
     def Draw(self, tela):
         """Desenha a comida na tela especificada."""

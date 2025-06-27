@@ -1,4 +1,8 @@
 import pygame
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 class Scream:
@@ -28,4 +32,5 @@ class Scream:
     largura = 640  # Definição da largura da tela do jogo
     altura = 480  # Definição da altura da tela do jogo
     fps = pygame.time.Clock()  # Objeto Clock para controlar a taxa de quadros por segundo
+    FPS = int(os.getenv('FPS', '13'))
     tela = pygame.display.set_mode((largura, altura))  # Objeto Surface que representa a janela do jogo

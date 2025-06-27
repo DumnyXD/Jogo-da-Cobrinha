@@ -1,11 +1,11 @@
 from sys import exit
 import pygame
-from scream import Scream
-from cobrinha import Cobrinha
-from comida import Comida
-from objeto_texto import ObjetoTexto
+from src.config.game_config import Scream
+from src.game.cobrinha import Cobrinha
+from src.game.comida import Comida
+from src.graphics.objeto_texto import ObjetoTexto
 from pygame.locals import *
-from logger import Logger
+from src.utils.logger import Logger
 
 logger = Logger()
 
@@ -38,7 +38,7 @@ def jogo(maiorPontuacao: int):
     cobrinha = Cobrinha((100, 100))  # Cria uma instância da classe Cobrinha com posição inicial (100, 100)
     logger.info(f"Comida criada em {comida.getPos()}, Cobrinha criada em {cobrinha.getPosCabeca()}")
 
-    titulo = ObjetoTexto("Snake", Scream.corTitulo, 25, "Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
+    titulo = ObjetoTexto("Snake", Scream.corTitulo, 25, "assets/Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
     titulo.FormatarMeio(25)  # Formata o objeto de texto para ser exibido no centro da tela
 
     pygame.display.set_caption("Snake Game")  # Define o título da janela do jogo como "Snake Game"
@@ -123,21 +123,21 @@ def menu():
     logger.info("Iniciando menu...")
     pygame.init()  # Inicializa o módulo pygame
 
-    titulo1 = ObjetoTexto("Snake", Scream.corTitulo, 60, "Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
+    titulo1 = ObjetoTexto("Snake", Scream.corTitulo, 60, "assets/Daydream.ttf")  # Cria um objeto de texto com o título "Snake"
     titulo1.FormatarMeio(80)  # Formata o objeto de texto para ser exibido no centro da tela
 
-    titulo2 = ObjetoTexto("Game", Scream.corTitulo, 60, "Daydream.ttf")  # Cria um objeto de texto com a palavra "Game"
+    titulo2 = ObjetoTexto("Game", Scream.corTitulo, 60, "assets/Daydream.ttf")  # Cria um objeto de texto com a palavra "Game"
     titulo2.FormatarMeio(titulo1.posY + titulo1.altura + 40)  # Formata o objeto de texto para ser exibido abaixo do título "Snake"
 
-    iniciar = ObjetoTexto("Iniciar", Scream.verde, 36, "Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Iniciar"
+    iniciar = ObjetoTexto("Iniciar", Scream.verde, 36, "assets/Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Iniciar"
     iniciar.FormatarMeio(300)  # Formata o objeto de texto para ser exibido na posição vertical 300
     iniciar.CriarBotao()  # Cria um botão com base no objeto de texto
 
-    creditos = ObjetoTexto("Creditos", Scream.verde, 36, "Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Creditos"
+    creditos = ObjetoTexto("Creditos", Scream.verde, 36, "assets/Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Creditos"
     creditos.FormatarMeio(iniciar.posY + 80)  # Formata o objeto de texto para ser exibido abaixo da opção "Iniciar"
     creditos.CriarBotao()  # Cria um botão com base no objeto de texto
 
-    sair = ObjetoTexto("Sair", Scream.vermelho, 36, "Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Sair"
+    sair = ObjetoTexto("Sair", Scream.vermelho, 36, "assets/Daydream.ttf", Scream.corBorda)  # Cria um objeto de texto com a opção "Sair"
     sair.FormatarMeio(creditos.posY + 80)  # Formata o objeto de texto para ser exibido abaixo da opção "Creditos"
     sair.CriarBotao()  # Cria um botão com base no objeto de texto
 
@@ -193,19 +193,19 @@ def creditos():
 
     volta = False  # Variável que indica se deve voltar ao menu principal
 
-    devs = ObjetoTexto("Dev's:", Scream.verde, 20, "Daydream.ttf")  # Cria um objeto de texto com o título "Dev's"
+    devs = ObjetoTexto("Dev's:", Scream.verde, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com o título "Dev's"
     devs.FormararSuperiorEscerdo()  # Formata o objeto de texto para ser exibido no canto superior esquerdo da tela
 
-    Wallysson = ObjetoTexto("   Wallysson - RA:323130386", Scream.branco, 20, "Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Wallysson
+    Wallysson = ObjetoTexto("   Wallysson - RA:323130386", Scream.branco, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Wallysson
     Wallysson.FormararSuperiorEscerdo(devs.posY + (devs.altura + 30))  # Formata o objeto de texto para ser exibido abaixo do título "Dev's"
 
-    Fernanda = ObjetoTexto("   Fernanda - RA:323116602", Scream.branco, 20, "Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Fernanda
+    Fernanda = ObjetoTexto("   Fernanda - RA:323116602", Scream.branco, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Fernanda
     Fernanda.FormararSuperiorEscerdo(Wallysson.posY + (Wallysson.altura + 30))  # Formata o objeto de texto para ser exibido abaixo das informações do desenvolvedor Wallysson
 
-    Maysa = ObjetoTexto("   Maysa - RA:323120206", Scream.branco, 20, "Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Maysa
+    Maysa = ObjetoTexto("   Maysa - RA:323120206", Scream.branco, 20, "assets/Daydream.ttf")  # Cria um objeto de texto com informações do desenvolvedor Maysa
     Maysa.FormararSuperiorEscerdo(Fernanda.posY + (Fernanda.altura + 30))  # Formata o objeto de texto para ser exibido abaixo das informações do desenvolvedor Fernanda
 
-    voltar = ObjetoTexto("Voltar", Scream.branco, 20, "Daydream.ttf", Scream.vermelho)  # Cria um objeto de texto com a opção "Voltar"
+    voltar = ObjetoTexto("Voltar", Scream.branco, 20, "assets/Daydream.ttf", Scream.vermelho)  # Cria um objeto de texto com a opção "Voltar"
     voltar.FormatarInferorDireito()  # Formata o objeto de texto para ser exibido no canto inferior direito da tela
     voltar.CriarBotao()  # Cria um botão com base no objeto de texto
 

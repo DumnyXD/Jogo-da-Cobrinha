@@ -1,6 +1,6 @@
 import pygame
-from scream import Scream
-from logger import Logger
+from src.config.game_config import Scream
+from src.utils.logger import Logger
 
 logger = Logger()
 

@@ -1,7 +1,9 @@
 import pygame
 from dotenv import load_dotenv
 import os
+from src.utils.logger import Logger
 
+logger = Logger()
 load_dotenv()
 
 
@@ -34,3 +36,4 @@ class Scream:
     fps = pygame.time.Clock()  # Objeto Clock para controlar a taxa de quadros por segundo
     FPS = int(os.getenv('FPS', '13'))
     tela = pygame.display.set_mode((largura, altura))  # Objeto Surface que representa a janela do jogo
+    logger.info(f"Configurações de tela inicializadas: Largura={largura}, Altura={altura}, FPS={FPS}")

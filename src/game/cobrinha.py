@@ -1,5 +1,5 @@
 import pygame
-from logger import Logger
+from src.utils.logger import Logger
 
 logger = Logger()
 

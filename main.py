@@ -1,11 +1,11 @@
 from sys import exit
 import pygame
-from scream import Scream
-from cobrinha import Cobrinha
-from comida import Comida
-from objeto_texto import ObjetoTexto
+from src.config.game_config import Scream
+from src.game.cobrinha import Cobrinha
+from src.game.comida import Comida
+from src.graphics.objeto_texto import ObjetoTexto
 from pygame.locals import *
-from logger import Logger
+from src.utils.logger import Logger
 
 logger = Logger()
 
@@ -44,6 +44,10 @@ def jogo(maiorPontuacao: int):
     pygame.display.set_caption("Snake Game")  # Define o título da janela do jogo como "Snake Game"
     logger.info("Título da janela definido como 'Snake Game'.")
 
+    pausado = False
+    texto_pausado = ObjetoTexto("PAUSADO", Scream.branco, 40, "Daydream.ttf")
+    texto_pausado.FormatarMeio(Scream.altura // 2)
+
     while True:
         Scream.fps.tick(Scream.FPS)  # Limita o FPS do jogo
 
@@ -60,41 +64,46 @@ def jogo(maiorPontuacao: int):
                 exit()  # Encerra o programa
             elif event.type == KEYDOWN:  # Se o evento for uma tecla pressionada
                 logger.info(f"Tecla pressionada: {event.key}")
-                if (event.key == K_UP or event.key == K_w) and cobrinha.getDirecao() != "baixo":  # Se a tecla pressionada for a seta para cima ou a tecla "w" e a direção da cobrinha não for "baixo"
-                    cobrinha.setDirecao("cima")  # Define a direção da cobrinha como "cima"
-                    logger.info("Direção da cobrinha alterada para CIMA.")
-                    break  # Sai do loop
-                elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":  # Se a tecla pressionada for a seta para baixo ou a tecla "s" e a direção da cobrinha não for "cima"
-                    cobrinha.setDirecao("baixo")  # Define a direção da cobrinha como "baixo"
-                    logger.info("Direção da cobrinha alterada para BAIXO.")
-                    break  # Sai do loop
-                elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:  # Se a tecla pressionada for a seta para a esquerda ou a tecla "a", a direção da cobrinha não for "direita" e a direção da cobrinha não for None
-                    cobrinha.setDirecao("esquerda")  # Define a direção da cobrinha como "esquerda"
-                    logger.info("Direção da cobrinha alterada para ESQUERDA.")
-                    break  # Sai do loop
-                elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":  # Se a tecla pressionada for a seta para a direita ou a tecla "d" e a direção da cobrinha não for "esquerda"
-                    cobrinha.setDirecao("direita")  # Define a direção da cobrinha como "direita"
-                    logger.info("Direção da cobrinha alterada para DIREITA.")
-                    break  # Sai do loop
+                if event.key == K_p:
+                    pausado = not pausado
+                    logger.info(f"Jogo {'PAUSADO' if pausado else 'RESUMIDO'}.")
+                if not pausado:
+                    if (event.key == K_UP or event.key == K_w) and cobrinha.getDirecao() != "baixo":  # Se a tecla pressionada for a seta para cima ou a tecla "w" e a direção da cobrinha não for "baixo"
+                        cobrinha.setDirecao("cima")  # Define a direção da cobrinha como "cima"
+                        logger.info("Direção da cobrinha alterada para CIMA.")
+                        break  # Sai do loop
+                    elif (event.key == K_DOWN or event.key == K_s) and cobrinha.getDirecao() != "cima":  # Se a tecla pressionada for a seta para baixo ou a tecla "s" e a direção da cobrinha não for "cima"
+                        cobrinha.setDirecao("baixo")  # Define a direção da cobrinha como "baixo"
+                        logger.info("Direção da cobrinha alterada para BAIXO.")
+                        break  # Sai do loop
+                    elif (event.key == K_LEFT or event.key == K_a) and cobrinha.getDirecao() != "direita" and cobrinha.getDirecao() is not None:  # Se a tecla pressionada for a seta para a esquerda ou a tecla "a", a direção da cobrinha não for "direita" e a direção da cobrinha não for None
+                        cobrinha.setDirecao("esquerda")  # Define a direção da cobrinha como "esquerda"
+                        logger.info("Direção da cobrinha alterada para ESQUERDA.")
+                        break  # Sai do loop
+                    elif (event.key == K_RIGHT or event.key == K_d) and cobrinha.getDirecao() != "esquerda":  # Se a tecla pressionada for a seta para a direita ou a tecla "d" e a direção da cobrinha não for "esquerda"
+                        cobrinha.setDirecao("direita")  # Define a direção da cobrinha como "direita"
+                        logger.info("Direção da cobrinha alterada para DIREITA.")
+                        break  # Sai do loop
 
-        if comida.getPos() == cobrinha.getPosCabeca():  # Se a posição da comida for igual à posição da cabeça da cobrinha
-            logger.info("Comida consumida!")
-            ponto = True  # Indica que a cobrinha ganhou um ponto
-            pontuacao += 10  # Aumenta a pontuação em 10
-            comida.setPos(comida.NewPos())  # Define uma nova posição para a comida
-            logger.info(f"Nova pontuação: {pontuacao}. Nova posição da comida: {comida.getPos()}")
-            if maiorPontuacao < pontuacao:  # Se a pontuação atual for maior do que a maior pontuação já alcançada
-                maiorPontuacao = pontuacao  # Atualiza a maior pontuação
-                logger.info(f"Nova maior pontuação: {maiorPontuacao}")
+        if not pausado:
+            if comida.getPos() == cobrinha.getPosCabeca():  # Se a posição da comida for igual à posição da cabeça da cobrinha
+                logger.info("Comida consumida!")
+                ponto = True  # Indica que a cobrinha ganhou um ponto
+                pontuacao += 10  # Aumenta a pontuação em 10
+                comida.setPos(comida.NewPos())  # Define uma nova posição para a comida
+                logger.info(f"Nova pontuação: {pontuacao}. Nova posição da comida: {comida.getPos()}")
+                if maiorPontuacao < pontuacao:  # Se a pontuação atual for maior do que a maior pontuação já alcançada
+                    maiorPontuacao = pontuacao  # Atualiza a maior pontuação
+                    logger.info(f"Nova maior pontuação: {maiorPontuacao}")
 
-        else:
-            ponto = False  # Indica que a cobrinha não ganhou um ponto
+            else:
+                ponto = False  # Indica que a cobrinha não ganhou um ponto
 
-        cobrinha.Move(ponto)  # Move a cobrinha de acordo com a direção e se ganhou ponto ou não
+            cobrinha.Move(ponto)  # Move a cobrinha de acordo com a direção e se ganhou ponto ou não
 
-        if not cobrinha.getPerca():  # Se a cobrinha não perdeu o jogo
-            logger.info(f"Game Over! Pontuação final: {pontuacao}. Maior pontuação: {maiorPontuacao}")
-            return maiorPontuacao  # Retorna a nova maior pontuação alcançada no jogo
+            if not cobrinha.getPerca():  # Se a cobrinha não perdeu o jogo
+                logger.info(f"Game Over! Pontuação final: {pontuacao}. Maior pontuação: {maiorPontuacao}")
+                return maiorPontuacao  # Retorna a nova maior pontuação alcançada no jogo
 
         Scream.tela.fill(Scream.corFundo)  # Preenche a tela com a cor de fundo
 
@@ -108,6 +117,9 @@ def jogo(maiorPontuacao: int):
         comida.Draw(Scream.tela)  # Desenha a comida na tela
 
         cobrinha.Draw(Scream.tela)  # Desenha a cobrinha na tela
+
+        if pausado:
+            texto_pausado.Draw()
 
         pygame.display.update()  # Atualiza a tela do jogo
 

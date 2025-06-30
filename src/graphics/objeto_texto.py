@@ -1,6 +1,6 @@
 import pygame
 import os
-from src.config.game_config import Scream
+from src.config.game_config import GameConfig
 from src.utils.logger import Logger
 
 logger = Logger()
@@ -38,7 +38,8 @@ class ObjetoTexto:
                  fundo: tuple[int, int, int] = None):
         self.fonte = fonte  # Nome do arquivo de fonte a ser utilizado
         self.tamanho = tamanho  # Tamanho da fonte em pixels
-        font_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', self.fonte)
+        pygame.font.init()
+        font_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', self.fonte))
         self.font = pygame.font.Font(font_path, self.tamanho)  # Objeto de fonte do Pygame
         self.texto = texto  # Conteúdo do texto
         self.cor = cor  # Cor do texto
@@ -53,9 +54,9 @@ class ObjetoTexto:
             self.render = self.font.render(self.texto, True, self.cor, self.fundo)
         logger.info(f"ObjetoTexto criado: \"{self.texto}\" (Tamanho: {self.tamanho}, Cor: {self.cor})")
 
-    def Draw(self):
+    def Draw(self, screen):
         """Desenha o texto na tela."""
-        Scream.tela.blit(self.render, (self.posX, self.posY))
+        screen.blit(self.render, (self.posX, self.posY))
 
     def FormatarMeio(self, Y: int):
         """
@@ -64,13 +65,13 @@ class ObjetoTexto:
         O texto é ajustado para que seu centro esteja alinhado horizontalmente com a posição Y fornecida.
 
         """
-        self.posX = (Scream.largura - self.largura) // 2
+        self.posX = (GameConfig.largura - self.largura) // 2
         self.posY = Y - (self.altura // 2)
 
     def FormatarInferorDireito(self):
         """Formata o texto para ficar alinhado no canto inferior direito da tela."""
-        self.posX = (Scream.largura - self.largura) - 10
-        self.posY = (Scream.altura - self.altura) - 10
+        self.posX = (GameConfig.largura - self.largura) - 10
+        self.posY = (GameConfig.altura - self.altura) - 10
 
     def CriarBotao(self):
         """Cria um retângulo de colisão para o texto como um botão."""
@@ -78,7 +79,7 @@ class ObjetoTexto:
 
     def FormararSuperiorDireito(self):
         """Formata o texto para ficar alinhado no canto superior direito da tela."""
-        self.posX = (Scream.largura - self.largura) - 10
+        self.posX = (GameConfig.largura - self.largura) - 10
         self.posY = 25 - (self.altura // 2)
 
     def FormararSuperiorEscerdo(self, Y: int = None):

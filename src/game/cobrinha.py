@@ -1,5 +1,5 @@
-import pygame
 from src.utils.logger import Logger
+from src.config.game_config import GameConfig
 
 logger = Logger()
 
@@ -75,7 +75,7 @@ class Cobrinha:
             elif self.__direcao == "direita":
                 x += 10
 
-            if x < 10 or x > 620 or y < 50 or y > 460:
+            if x < 10 or x > GameConfig.largura - 20 or y < 50 or y > GameConfig.altura - 20:
                 self.__perca = False
                 logger.warning(f"Cobrinha colidiu com a borda em ({x},{y}). Game Over!")
 
@@ -89,10 +89,11 @@ class Cobrinha:
                 self.__corpo.pop()
             logger.info(f"Cobrinha movida para ({x},{y}). Ponto: {ponto}")
 
-    def Draw(self, tela):
-        """Desenha a cobrinha na tela especificada."""
-        for pos in self.__corpo:
-            if pos == self.__corpo[0]:
-                pygame.draw.rect(tela, self.__corCabeca, (pos[0], pos[1], 10, 10))
-            else:
-                pygame.draw.rect(tela, self.__corCorpo, (pos[0], pos[1], 10, 10))
+    def getCorpo(self):
+        return self.__corpo
+
+    def getCorCabeca(self):
+        return self.__corCabeca
+
+    def getCorCorpo(self):
+        return self.__corCorpo

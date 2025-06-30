@@ -5,21 +5,22 @@ class Logger:
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
 
-        # Create handlers
-        c_handler = logging.StreamHandler()
-        c_handler.setLevel(logging.WARNING)
-        f_handler = logging.FileHandler('file.log', encoding='utf-8')
-        f_handler.setLevel(logging.WARNING)
+        if not self.logger.handlers:
+            # Create handlers
+            c_handler = logging.StreamHandler()
+            c_handler.setLevel(logging.INFO)
+            f_handler = logging.FileHandler('file.log', encoding='utf-8')
+            f_handler.setLevel(logging.INFO)
 
-        # Create formatters and add it to handlers
-        c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-        f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        c_handler.setFormatter(c_format)
-        f_handler.setFormatter(f_format)
+            # Create formatters and add it to handlers
+            c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+            f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            c_handler.setFormatter(c_format)
+            f_handler.setFormatter(f_format)
 
-        # Add handlers to the logger
-        self.logger.addHandler(c_handler)
-        self.logger.addHandler(f_handler)
+            # Add handlers to the logger
+            self.logger.addHandler(c_handler)
+            self.logger.addHandler(f_handler)
 
     def info(self, message):
         self.logger.info(message)

@@ -34,7 +34,7 @@ class GameCore:
     def update(self, actions):
         direction_changed_this_frame = False
         for action in actions:
-            logger.info(f"Ação recebida: {action}")
+            
             if action == "toggle_pause":
                 self.pausado = not self.pausado
                 logger.info(f"Jogo {'PAUSADO' if self.pausado else 'RESUMIDO'}.")
@@ -44,19 +44,19 @@ class GameCore:
                     if action == "move_up" and self.cobrinha.getDirecao() != "baixo":
                         self.cobrinha.setDirecao("cima")
                         direction_changed_this_frame = True
-                        logger.info("Direção da cobrinha alterada para CIMA.")
+                        
                     elif action == "move_down" and self.cobrinha.getDirecao() != "cima":
                         self.cobrinha.setDirecao("baixo")
                         direction_changed_this_frame = True
-                        logger.info("Direção da cobrinha alterada para BAIXO.")
+                        
                     elif action == "move_left" and self.cobrinha.getDirecao() != "direita":
                         self.cobrinha.setDirecao("esquerda")
                         direction_changed_this_frame = True
-                        logger.info("Direção da cobrinha alterada para ESQUERDA.")
+                        
                     elif action == "move_right" and self.cobrinha.getDirecao() != "esquerda":
                         self.cobrinha.setDirecao("direita")
                         direction_changed_this_frame = True
-                        logger.info("Direção da cobrinha alterada para DIREITA.")
+                        
 
         if not self.pausado:
             ponto = False

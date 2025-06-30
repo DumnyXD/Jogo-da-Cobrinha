@@ -49,7 +49,7 @@ class Cobrinha:
             return
 
         current_pos = self.__corpo[0]
-        logger.info(f"Movendo cobrinha de {current_pos} na direção {self.__direcao}")
+        
 
         # Calcula a próxima posição sem criar um objeto Position ainda
         next_pos_candidate = self.__move_strategies[self.__direcao].move(current_pos)
@@ -66,7 +66,7 @@ class Cobrinha:
 
         if not ponto:
             self.__corpo.pop()
-        logger.info(f"Cobrinha movida para {new_pos}. Ponto: {ponto}")
+        
 
     def _check_collision(self, x: int, y: int, ponto: bool) -> bool:
         # Colisão com as bordas

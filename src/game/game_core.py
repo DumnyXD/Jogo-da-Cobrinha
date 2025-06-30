@@ -37,7 +37,7 @@ class GameCore:
             
             if action == "toggle_pause":
                 self.pausado = not self.pausado
-                logger.info(f"Jogo {'PAUSADO' if self.pausado else 'RESUMIDO'}.")
+                
 
             if not self.pausado:
                 if not direction_changed_this_frame:

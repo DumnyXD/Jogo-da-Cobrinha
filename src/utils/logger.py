@@ -8,7 +8,7 @@ class Logger:
         if not self.logger.handlers:
             # Create handlers
             c_handler = logging.StreamHandler()
-            f_handler = logging.FileHandler('file.log')
+            f_handler = logging.FileHandler('file.log', encoding='utf-8')
 
             # Create formatters and add it to handlers
             c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')

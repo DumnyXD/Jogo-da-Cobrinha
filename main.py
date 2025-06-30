@@ -17,6 +17,7 @@ def jogo(maiorPontuacao: int):
     
     renderer = PygameRenderer()
     game_core = GameCore(maiorPontuacao)
+    game_core.add_observer(renderer)
 
     while True:
         events = pygame.event.get()
@@ -40,9 +41,8 @@ def jogo(maiorPontuacao: int):
         game_state = game_core.update(actions)
 
         if game_state == "game_over":
-            return game_core.maiorPontuacao
+            return game_core.get_high_score()
 
-        renderer.render(game_core.get_game_state())
         renderer.tick()
 
 

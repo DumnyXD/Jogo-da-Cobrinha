@@ -1,4 +1,7 @@
-import pygame
+from src.utils.logger import Logger
+from src.config.game_config import GameConfig
+
+logger = Logger()
 
 
 class Cobrinha:
@@ -29,6 +32,7 @@ class Cobrinha:
         self.__corpo = [posInicial, (posInicial[0] - 10, posInicial[1]), (posInicial[0] - 20, posInicial[1])]  # Inicialização das posições do corpo da cobrinha
         self.__direcao = None  # Direção inicial da cobrinha
         self.__perca = True  # Indicador de perda inicial como True (ainda não perdeu)
+        logger.info(f"Cobrinha inicializada em {posInicial}")
 
     def setPerca(self, perca: bool):
         """Define o valor de __perca."""
@@ -61,6 +65,7 @@ class Cobrinha:
         """
         if self.__direcao:
             x, y = self.__corpo[0]
+            logger.info(f"Movendo cobrinha de ({x},{y}) na direção {self.__direcao}")
             if self.__direcao == "cima":
                 y -= 10
             elif self.__direcao == "baixo":
@@ -70,21 +75,25 @@ class Cobrinha:
             elif self.__direcao == "direita":
                 x += 10
 
-            if x < 10 or x > 620 or y < 50 or y > 460:
+            if x < 10 or x > GameConfig.largura - 20 or y < 50 or y > GameConfig.altura - 20:
                 self.__perca = False
+                logger.warning(f"Cobrinha colidiu com a borda em ({x},{y}). Game Over!")
 
             if (x, y) in self.__corpo:
                 self.__perca = False
+                logger.warning(f"Cobrinha colidiu com o próprio corpo em ({x},{y}). Game Over!")
 
             self.__corpo.insert(0, (x, y))
 
             if not ponto:
                 self.__corpo.pop()
+            logger.info(f"Cobrinha movida para ({x},{y}). Ponto: {ponto}")
 
-    def Draw(self, tela):
-        """Desenha a cobrinha na tela especificada."""
-        for pos in self.__corpo:
-            if pos == self.__corpo[0]:
-                pygame.draw.rect(tela, self.__corCabeca, (pos[0], pos[1], 10, 10))
-            else:
-                pygame.draw.rect(tela, self.__corCorpo, (pos[0], pos[1], 10, 10))
+    def getCorpo(self):
+        return self.__corpo
+
+    def getCorCabeca(self):
+        return self.__corCabeca
+
+    def getCorCorpo(self):
+        return self.__corCorpo

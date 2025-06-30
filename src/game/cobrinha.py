@@ -10,7 +10,7 @@ class Cobrinha:
     def __init__(self, posInicial: Position):
         self.__corCorpo = (0, 255, 0)
         self.__corCabeca = (0, 230, 0)
-        self.__corpo = [posInicial, Position(posInicial.x - 10, posInicial.y), Position(posInicial.x - 20, posInicial.y)]
+        self.__corpo = [posInicial]
         self.__direcao = None
         self.__perca = True
         self.__move_strategies = {
@@ -55,7 +55,7 @@ class Cobrinha:
         next_pos_candidate = self.__move_strategies[self.__direcao].move(current_pos)
         next_x, next_y = next_pos_candidate.x, next_pos_candidate.y
 
-        if self._check_collision(next_x, next_y):
+        if self._check_collision(next_x, next_y, ponto):
             self.__perca = False
             logger.warning(f"Cobrinha colidiu em ({next_x},{next_y}). Game Over!")
             return
@@ -68,15 +68,26 @@ class Cobrinha:
             self.__corpo.pop()
         logger.info(f"Cobrinha movida para {new_pos}. Ponto: {ponto}")
 
-    def _check_collision(self, x: int, y: int) -> bool:
+    def _check_collision(self, x: int, y: int, ponto: bool) -> bool:
         # Colisão com as bordas
         if not (10 <= x <= GameConfig.largura - 20 and 50 <= y <= GameConfig.altura - 20):
             return True
-        
+
         # Colisão com o próprio corpo
-        # Converte a tupla (x,y) para um objeto Position para comparação
         test_pos = Position(x, y)
-        if test_pos in self.__corpo[1:]:
+
+        # Segments to check for self-collision
+        # Exclude the current head (self.__corpo[0]) from consideration
+        # because the new head will replace it.
+        segments_to_check = self.__corpo[1:]
+
+        if not ponto:
+            # If the snake is not growing, the tail will be removed.
+            # So, the new head can occupy the current tail's position without collision.
+            if len(segments_to_check) > 0:
+                segments_to_check = segments_to_check[:-1] # Exclude the last segment (current tail)
+
+        if test_pos in segments_to_check:
             return True
         return False
 

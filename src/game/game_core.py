@@ -49,7 +49,7 @@ class GameCore:
                         self.cobrinha.setDirecao("baixo")
                         direction_changed_this_frame = True
                         logger.info("Direção da cobrinha alterada para BAIXO.")
-                    elif action == "move_left" and self.cobrinha.getDirecao() != "direita" and self.cobrinha.getDirecao() is not None:
+                    elif action == "move_left" and self.cobrinha.getDirecao() != "direita":
                         self.cobrinha.setDirecao("esquerda")
                         direction_changed_this_frame = True
                         logger.info("Direção da cobrinha alterada para ESQUERDA.")

@@ -7,7 +7,9 @@ class Logger:
 
         # Create handlers
         c_handler = logging.StreamHandler()
+            c_handler.setLevel(logging.WARNING)
         f_handler = logging.FileHandler('file.log', encoding='utf-8')
+            f_handler.setLevel(logging.WARNING)
 
         # Create formatters and add it to handlers
         c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
